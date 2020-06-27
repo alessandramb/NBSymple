@@ -1,0 +1,78 @@
+                        NBSymple README
+
+NBsymple v1.0 is a numerical code for integrating N-body systems
+using GPUs (see Capuzzo-Dolcetta, R., Mastrobuono-
+Battisti, A., Maschietti, D., "NBSymple, a double parallel, symplectic N-body code 
+running on Graphic Processing Units", 2010; see http://arxiv.org/abs/1003.3896).
+
+For running the code follow the next steps.
+
+1 ) Before compiling the code go to const.h and set the following 
+    elements:
+
+N                         Number of particles (stars)
+MASS                      Enable it for using a Salpeter mass function
+POTENTIAL                 Disable it for evaluating the Galactic 
+                          potential by CPUs, instead of GPUs
+                                                                                                
+EXT_DATA                  Enable EXT_DATA if you want use the input 
+                          data file ExtData.txt. ExtData.txt contains 
+                          the initial conditions of all part.s. Enter as many line 
+                           as the number (N) of stars, as follows: 
+                            x y z u v w m
+                          The length, time and mass units are: the cluster radius, 
+                          its internal crossing time and its total mass
+                                                                                                
+FRAME (10)                number of output files
+                                                                                                
+S_M (2.35)                It represents the exponent of the Salpeter 
+                          function
+CLASS_N (5)               Class number
+                                                                                                
+THREADS_PER_BLOCK (256)   Number of threads per block on the GPU device(s). If T is 
+                          the number of threads per block, the ratio N/T (where N 
+                          is the number of particles) must be an integer number greater 
+                          or equal to the number of multiprocessors in the GPU (e.g. 2 for 
+                          a NVIDIA Quadro NVS 290 GPU, 30 for an NVDIA Tesla C1060 GPU); 
+                          as example, in the case of one Tesla C1060 GPU, the choice of 
+                          T=16 requires N=480 as minimum value for N, because N/T=480/16=30. 
+                          Of course, doubling the number of GPUs available implies 
+			  halving the value of T, and so on.
+NUM_GPUS (2)              Number of GPUs to use (GPUs must be of the same type)
+NUM_THREADS (8)           Number of CPUs
+
+
+The brackets enclose the sugested value for the parameter.
+
+2) Choose one of the following settings to compile the code:
+
+- Type 'make L=yes' to compile the code for integrating an N-body 
+  system using single precision variables via leapfrog method.
+
+- Type 'make S=yes' to compile the code for integrating an N-body
+  system using double precision variables via sixth order method. Of course this requires a 
+  double precision supporting GPU.
+
+- Type 'make DS=yes' to compile the code for using "double-single" precision variables 
+  (see Gaburov et al, 2008) via sixth order method.
+
+3) Go to input.txt set the parameters
+
+"Number of steps": (1000)               Total number of time steps. 
+"h": (0.0001)                           it is the adimensional time integration step.
+"Cluster Radius": (10)                  it is in parsec, because of the presence of the 
+                                        external Galactic gravitational field whose constants are in parsecs 
+"beta": (0)                             ratio of the initial black hole speed to the escape velocity from 
+                                        the cluster center 
+"Total mass of the sys.": (15369)       it is in solar masses. 
+"Black Hole Mass": (10)                 it is in solar masses.
+ 
+
+4) To run the code, type ./NBSymple 
+
+For any question or comment, feel free to contact me:
+
+- Alessandra Mastrobuono-Battisti, 
+  alessandra.mastrobuonobattisti@uniroma1.it, 
+  Physics Department, "Sapienza", University of Rome 
+

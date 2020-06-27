@@ -1,0 +1,6 @@
+"Number of steps": 1000
+"h": 0.001
+"Cluster Radius": 10
+"beta": 0
+"Total mass of the sys.": 480
+"Black Hole Mass": 1
